@@ -1,26 +1,102 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-playfair);
+  --font-sans: var(--font-inter);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@theme {
+  --color-forest: #0d2b21;
+  --color-forest-dark: #102f25;
+  --color-cream: #f5f1e8;
+  --color-white-warm: #faf8f2;
+  --color-terracotta: #d9784a;
+  --color-terracotta-dark: #b85c30;
+  --color-gold: #c7a66a;
+  --color-gold-dark: #a5854f;
+}
+
+:root {
+  color-scheme: light;
+}
+
+* {
+  border-color: rgb(13 43 33 / 0.12);
+}
+
+html {
+  scroll-padding-top: 5.5rem;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-white-warm);
+  color: var(--color-forest);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background-color: var(--color-terracotta);
+  color: var(--color-white-warm);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-terracotta);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Scroll-reveal utility, applied by RevealOnScroll */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Subtle image zoom on hover, paired with a `group` wrapper */
+.img-zoom {
+  transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.group:hover .img-zoom {
+  transform: scale(1.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .img-zoom {
+    transition: none;
+  }
+  .group:hover .img-zoom {
+    transform: none;
+  }
+}
+
+/* Custom scrollbar for horizontal editorial rails */
+.scroll-rail::-webkit-scrollbar {
+  height: 4px;
+}
+
+.scroll-rail::-webkit-scrollbar-thumb {
+  background-color: rgb(13 43 33 / 0.2);
+  border-radius: 999px;
 }
