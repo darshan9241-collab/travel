@@ -4,17 +4,37 @@ import { useId, useState, type FormEvent } from "react";
 import Container from "./Container";
 import RevealOnScroll from "./RevealOnScroll";
 
+type Status = "idle" | "sending" | "submitted" | "error";
+
 export default function Newsletter() {
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "submitted">("idle");
+  const [status, setStatus] = useState<Status>("idle");
+  const [error, setError] = useState<string | null>(null);
   const inputId = useId();
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!email) return;
-    // Frontend-only for now — wire up to an email provider when ready.
-    setStatus("submitted");
-    setEmail("");
+
+    setStatus("sending");
+    setError(null);
+
+    try {
+      const response = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(result?.error || "Something went wrong. Please try again.");
+      }
+      setStatus("submitted");
+      setEmail("");
+    } catch (err) {
+      setStatus("error");
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    }
   }
 
   return (
@@ -58,11 +78,17 @@ export default function Newsletter() {
                 />
                 <button
                   type="submit"
-                  className="whitespace-nowrap bg-terracotta px-7 py-3.5 text-sm font-medium tracking-wide text-white-warm transition-colors duration-300 hover:bg-terracotta-dark"
+                  disabled={status === "sending"}
+                  className="whitespace-nowrap bg-terracotta px-7 py-3.5 text-sm font-medium tracking-wide text-white-warm transition-colors duration-300 hover:bg-terracotta-dark disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  Subscribe
+                  {status === "sending" ? "Subscribing…" : "Subscribe"}
                 </button>
               </form>
+              {status === "error" && error && (
+                <p className="mt-3 text-sm text-terracotta" role="alert">
+                  {error}
+                </p>
+              )}
               <p className="mt-4 text-xs uppercase tracking-[0.15em] text-cream/45">
                 No spam. Unsubscribe anytime.
               </p>

@@ -2,22 +2,49 @@
 
 import { useState, type FormEvent } from "react";
 
-export default function ContactForm() {
-  const [submitted, setSubmitted] = useState(false);
+type Status = "idle" | "sending" | "submitted" | "error";
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+export default function ContactForm() {
+  const [status, setStatus] = useState<Status>("idle");
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    // Frontend-only for now — connect to an email/form service when ready.
-    setSubmitted(true);
-    event.currentTarget.reset();
+    const form = event.currentTarget;
+    const data = new FormData(form);
+    const payload = {
+      name: String(data.get("name") ?? ""),
+      email: String(data.get("email") ?? ""),
+      message: String(data.get("message") ?? ""),
+    };
+
+    setStatus("sending");
+    setError(null);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(result?.error || "Something went wrong. Please try again.");
+      }
+      setStatus("submitted");
+      form.reset();
+    } catch (err) {
+      setStatus("error");
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    }
   }
 
-  if (submitted) {
+  if (status === "submitted") {
     return (
       <div className="border border-forest/15 bg-cream/60 p-8 sm:p-10" role="status">
         <p className="font-serif text-2xl text-forest">Thank you for reaching out.</p>
         <p className="mt-3 leading-relaxed text-forest/70">
-          Your message has been noted. I&apos;ll get back to you at{" "}
+          Your message has been sent. I&apos;ll get back to you at{" "}
           <a href="mailto:darshan9241@gmail.com" className="text-terracotta underline underline-offset-4">
             darshan9241@gmail.com
           </a>{" "}
@@ -25,7 +52,7 @@ export default function ContactForm() {
         </p>
         <button
           type="button"
-          onClick={() => setSubmitted(false)}
+          onClick={() => setStatus("idle")}
           className="mt-6 text-sm font-medium text-terracotta transition-colors hover:text-terracotta-dark"
         >
           Send another message
@@ -80,11 +107,18 @@ export default function ContactForm() {
         />
       </div>
 
+      {status === "error" && error && (
+        <p className="text-sm text-terracotta" role="alert">
+          {error}
+        </p>
+      )}
+
       <button
         type="submit"
-        className="mt-2 w-fit bg-terracotta px-8 py-3.5 text-sm font-medium tracking-wide text-white-warm transition-colors duration-300 hover:bg-terracotta-dark"
+        disabled={status === "sending"}
+        className="mt-2 w-fit bg-terracotta px-8 py-3.5 text-sm font-medium tracking-wide text-white-warm transition-colors duration-300 hover:bg-terracotta-dark disabled:cursor-not-allowed disabled:opacity-60"
       >
-        Send Message
+        {status === "sending" ? "Sending…" : "Send Message"}
       </button>
     </form>
   );
