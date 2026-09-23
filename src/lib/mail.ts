@@ -1,6 +1,6 @@
 import { Resend } from "resend";
 
-export const OWNER_EMAIL = "darshan9241@gmail.com";
+export const OWNER_EMAIL = "wanderlouge@gmail.com";
 
 // Resend's shared test sender — works with no domain verification. Once a
 // domain is verified in the Resend dashboard, swap this for something like

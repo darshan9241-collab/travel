@@ -39,10 +39,10 @@ export default function ContactPage() {
 
             <div className="mt-8 flex flex-col gap-4">
               <a
-                href="mailto:darshan9241@gmail.com"
+                href="mailto:wanderlouge@gmail.com"
                 className="group inline-flex w-fit items-center gap-2 whitespace-nowrap font-sans text-lg font-medium text-forest transition-colors hover:text-terracotta"
               >
-                darshan9241@gmail.com
+                wanderlouge@gmail.com
                 <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">
                   →
                 </span>
@@ -60,7 +60,7 @@ export default function ContactPage() {
 
             <div className="mt-10 flex flex-col gap-3 sm:flex-row">
               <a
-                href="mailto:darshan9241@gmail.com"
+                href="mailto:wanderlouge@gmail.com"
                 className="inline-flex items-center justify-center gap-2 bg-terracotta px-7 py-3.5 text-sm font-medium tracking-wide text-white-warm transition-colors duration-300 hover:bg-terracotta-dark"
               >
                 Email Me →

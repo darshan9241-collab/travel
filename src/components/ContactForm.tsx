@@ -45,8 +45,8 @@ export default function ContactForm() {
         <p className="font-serif text-2xl text-forest">Thank you for reaching out.</p>
         <p className="mt-3 leading-relaxed text-forest/70">
           Your message has been sent. I&apos;ll get back to you at{" "}
-          <a href="mailto:darshan9241@gmail.com" className="text-terracotta underline underline-offset-4">
-            darshan9241@gmail.com
+          <a href="mailto:wanderlouge@gmail.com" className="text-terracotta underline underline-offset-4">
+            wanderlouge@gmail.com
           </a>{" "}
           soon.
         </p>

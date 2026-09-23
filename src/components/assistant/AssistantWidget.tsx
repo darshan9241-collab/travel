@@ -19,9 +19,12 @@ const WELCOME_MESSAGE: Message = {
 };
 
 const SUGGESTIONS = ["Tell me about Goa", "Where has Darshan travelled?", "How do I get in touch?"];
+const GREETING_STORAGE_KEY = "wanderlouge-assistant-greeted";
+const GREETING_TEXT = "Hi! I'm the Wanderlouge assistant — ask me anything about the journeys.";
 
 export default function AssistantWidget() {
   const [open, setOpen] = useState(false);
+  const [showGreeting, setShowGreeting] = useState(false);
   const [messages, setMessages] = useState<Message[]>([WELCOME_MESSAGE]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
@@ -31,6 +34,22 @@ export default function AssistantWidget() {
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, isTyping]);
+
+  // Greet first-time visitors with a small nudge bubble, once per browser session.
+  useEffect(() => {
+    if (window.sessionStorage.getItem(GREETING_STORAGE_KEY)) return;
+    const showTimer = window.setTimeout(() => {
+      setShowGreeting(true);
+      window.sessionStorage.setItem(GREETING_STORAGE_KEY, "1");
+    }, 1800);
+    return () => window.clearTimeout(showTimer);
+  }, []);
+
+  useEffect(() => {
+    if (!showGreeting) return;
+    const hideTimer = window.setTimeout(() => setShowGreeting(false), 10000);
+    return () => window.clearTimeout(hideTimer);
+  }, [showGreeting]);
 
   function sendMessage(text: string) {
     const trimmed = text.trim();
@@ -53,14 +72,51 @@ export default function AssistantWidget() {
 
   return (
     <>
+      {showGreeting && !open && (
+        <div
+          role="status"
+          className="fixed bottom-24 right-6 z-40 flex w-[calc(100vw-3rem)] max-w-[17rem] items-start gap-3 border border-forest/10 bg-white-warm px-4 py-3 text-sm leading-snug text-forest shadow-2xl"
+        >
+          <button
+            type="button"
+            onClick={() => {
+              setOpen(true);
+              setShowGreeting(false);
+            }}
+            className="flex-1 text-left transition-colors hover:text-terracotta"
+          >
+            {GREETING_TEXT}
+          </button>
+          <button
+            type="button"
+            onClick={() => setShowGreeting(false)}
+            aria-label="Dismiss greeting"
+            className="flex-shrink-0 text-forest/40 transition-colors hover:text-forest"
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2}>
+              <path d="M6 6l12 12M18 6 6 18" strokeLinecap="round" />
+            </svg>
+          </button>
+        </div>
+      )}
+
       <button
         type="button"
-        onClick={() => setOpen((value) => !value)}
+        onClick={() => {
+          setOpen((value) => !value);
+          setShowGreeting(false);
+        }}
         aria-expanded={open}
         aria-controls="assistant-panel"
         aria-label={open ? "Close assistant" : "Open Wanderlouge assistant"}
         className="fixed bottom-6 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-terracotta text-white-warm shadow-lg transition-transform duration-300 hover:scale-105 hover:bg-terracotta-dark"
       >
+        {showGreeting && !open && (
+          <span className="absolute right-0 top-0 flex h-3.5 w-3.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold opacity-75" />
+            <span className="relative inline-flex h-3.5 w-3.5 rounded-full bg-gold" />
+          </span>
+        )}
         {open ? (
           <svg aria-hidden="true" viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth={2}>
             <path d="M6 6l12 12M18 6 6 18" strokeLinecap="round" />
