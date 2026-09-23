@@ -1,5 +1,5 @@
 import { rawDestinations } from "@/data/destinations.raw";
-import { rawStories, PUBLISH_STORIES } from "@/data/stories.raw";
+import { rawStories } from "@/data/stories.raw";
 import { searchSite } from "@/lib/search";
 
 export interface AssistantLink {
@@ -21,13 +21,44 @@ function findDestination(input: string) {
 }
 
 function getPublishedStories() {
-  return PUBLISH_STORIES
-    ? [...rawStories].sort((a, b) => (a.date < b.date ? 1 : -1))
-    : [];
+  return rawStories
+    .filter((story) => story.published)
+    .sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
 function getStoriesFor(destinationSlug: string) {
   return getPublishedStories().filter((story) => story.destinationSlug === destinationSlug);
+}
+
+function findStoryByQuery(input: string) {
+  return getPublishedStories().find((story) => {
+    const slugWords = story.slug.replace(/-/g, " ");
+    return (
+      input.includes(story.location.toLowerCase()) ||
+      input.includes(story.state.toLowerCase()) ||
+      input.includes(slugWords)
+    );
+  });
+}
+
+/** Resolves which published story a trip-detail question (km, food, route…) is
+ * about. Returns `ambiguous: true` when multiple stories exist and none was
+ * named, so the caller can ask which trip before answering. */
+function resolveTargetStory(input: string) {
+  const publishedStories = getPublishedStories();
+  const matched = findStoryByQuery(input);
+  if (matched) return { story: matched, ambiguous: false };
+  if (publishedStories.length === 1) return { story: publishedStories[0], ambiguous: false };
+  if (publishedStories.length === 0) return { story: null, ambiguous: false };
+  return { story: null, ambiguous: true };
+}
+
+function askWhichTrip(): AssistantReply {
+  const publishedStories = getPublishedStories();
+  return {
+    text: "Which trip are you asking about? Just name the place, like \"Pondicherry\".",
+    links: publishedStories.map((story) => ({ label: story.title, href: `/blog/${story.slug}` })),
+  };
 }
 
 export function getAssistantReply(rawInput: string): AssistantReply {
@@ -57,6 +88,13 @@ export function getAssistantReply(rawInput: string): AssistantReply {
 
   if (matchesAny(input, ["bye", "goodbye", "see you", "cya", "take care"])) {
     return { text: "Safe travels! Come back anytime you have a question." };
+  }
+
+  if (matchesAny(input, ["saved", "bookmark", "reading list"])) {
+    return {
+      text: "Stories you save for later live on the Saved Stories page. Look for the bookmark icon in the navigation bar.",
+      links: [{ label: "Go to Saved Stories", href: "/saved" }],
+    };
   }
 
   if (
@@ -122,7 +160,7 @@ export function getAssistantReply(rawInput: string): AssistantReply {
     };
   }
 
-  if (matchesAny(input, ["contact", "email", "reach", "phone", "get in touch", "collaborate"])) {
+  if (matchesAny(input, ["contact", "email", "reach", "get in touch", "collaborate"])) {
     return {
       text: "You can reach Darshan directly at wanderlouge@gmail.com, or use the contact form on the Contact page.",
       links: [{ label: "Go to Contact", href: "/contact" }],
@@ -133,6 +171,63 @@ export function getAssistantReply(rawInput: string): AssistantReply {
     return {
       text: "The Gallery has a growing collection of photography from every destination covered so far.",
       links: [{ label: "Open Gallery", href: "/gallery" }],
+    };
+  }
+
+  if (matchesAny(input, ["km", "kms", "kilometer", "kilometre", "how far", "distance"])) {
+    const { story, ambiguous } = resolveTargetStory(input);
+    if (ambiguous) return askWhichTrip();
+    if (!story) {
+      return { text: "There aren't any published trips yet, so no distances to share just yet." };
+    }
+    const distanceItem = story.tripStats?.items?.find((item) => item.label.toLowerCase().includes("distance"));
+    if (!distanceItem) {
+      return {
+        text: `I don't have an exact distance noted for "${story.title}" yet.`,
+        links: [{ label: "Read the story", href: `/blog/${story.slug}` }],
+      };
+    }
+    return {
+      text: `${story.title}: ${distanceItem.value}.`,
+      links: [{ label: "See the trip details", href: `/blog/${story.slug}` }],
+    };
+  }
+
+  if (matchesAny(input, ["food", "what to eat", "where to eat", "restaurant", "cuisine", "snack"])) {
+    const { story, ambiguous } = resolveTargetStory(input);
+    if (ambiguous) return askWhichTrip();
+    if (!story) {
+      return { text: "There aren't any published trips yet, so no food notes to share just yet." };
+    }
+    if (!story.foodNotes || story.foodNotes.length === 0) {
+      return {
+        text: `I don't have specific food notes for "${story.title}" yet.`,
+        links: [{ label: "Read the story", href: `/blog/${story.slug}` }],
+      };
+    }
+    return {
+      text: `Food notes from ${story.title}: ${story.foodNotes.join("; ")}.`,
+      links: [{ label: "Read the full story", href: `/blog/${story.slug}` }],
+    };
+  }
+
+  if (
+    matchesAny(input, ["route", "which route", "what route", "stops on the way", "places did you visit", "places you visited", "places you stopped", "where did you stop", "how did you travel", "travel mode", "travel style"])
+  ) {
+    const { story, ambiguous } = resolveTargetStory(input);
+    if (ambiguous) return askWhichTrip();
+    if (!story) {
+      return { text: "There aren't any published trips yet, so no route to share just yet." };
+    }
+    if (!story.tripStats?.route) {
+      return {
+        text: `I don't have a route noted for "${story.title}" yet.`,
+        links: [{ label: "Read the story", href: `/blog/${story.slug}` }],
+      };
+    }
+    return {
+      text: `${story.title} route: ${story.tripStats.route}.`,
+      links: [{ label: "See the full trip details", href: `/blog/${story.slug}` }],
     };
   }
 

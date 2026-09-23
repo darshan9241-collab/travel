@@ -24,37 +24,39 @@ export default function StoriesGrid({ stories }: StoriesGridProps) {
 
   return (
     <div>
-      <div className="flex flex-wrap gap-3" role="group" aria-label="Filter stories by tag">
-        <button
-          type="button"
-          onClick={() => setActiveTag(null)}
-          className={cn(
-            "border px-4 py-2 text-xs font-medium uppercase tracking-[0.1em] transition-colors duration-300",
-            activeTag === null
-              ? "border-terracotta bg-terracotta text-white-warm"
-              : "border-forest/20 text-forest/70 hover:border-terracotta hover:text-terracotta",
-          )}
-          aria-pressed={activeTag === null}
-        >
-          All Stories
-        </button>
-        {tags.map((tag) => (
+      {stories.length > 1 && (
+        <div className="flex flex-wrap gap-3" role="group" aria-label="Filter stories by tag">
           <button
-            key={tag}
             type="button"
-            onClick={() => setActiveTag(tag)}
+            onClick={() => setActiveTag(null)}
             className={cn(
               "border px-4 py-2 text-xs font-medium uppercase tracking-[0.1em] transition-colors duration-300",
-              activeTag === tag
+              activeTag === null
                 ? "border-terracotta bg-terracotta text-white-warm"
                 : "border-forest/20 text-forest/70 hover:border-terracotta hover:text-terracotta",
             )}
-            aria-pressed={activeTag === tag}
+            aria-pressed={activeTag === null}
           >
-            {tag}
+            All Stories
           </button>
-        ))}
-      </div>
+          {tags.map((tag) => (
+            <button
+              key={tag}
+              type="button"
+              onClick={() => setActiveTag(tag)}
+              className={cn(
+                "border px-4 py-2 text-xs font-medium uppercase tracking-[0.1em] transition-colors duration-300",
+                activeTag === tag
+                  ? "border-terracotta bg-terracotta text-white-warm"
+                  : "border-forest/20 text-forest/70 hover:border-terracotta hover:text-terracotta",
+              )}
+              aria-pressed={activeTag === tag}
+            >
+              {tag}
+            </button>
+          ))}
+        </div>
+      )}
 
       {filtered.length === 0 ? (
         <p className="mt-16 text-forest/60">No stories with this tag just yet.</p>

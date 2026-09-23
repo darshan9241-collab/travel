@@ -1,14 +1,14 @@
 import { resolvePhoto } from "@/lib/images";
 import type { Story } from "@/types";
-import { rawStories, PUBLISH_STORIES } from "@/data/stories.raw";
+import { rawStories } from "@/data/stories.raw";
 
-export const stories: Story[] = PUBLISH_STORIES
-  ? rawStories.map((story) => ({
-      ...story,
-      featuredImage: resolvePhoto(story.featuredImage),
-      galleryImages: story.galleryImages.map(resolvePhoto),
-    }))
-  : [];
+export const stories: Story[] = rawStories
+  .filter((story) => story.published)
+  .map((story) => ({
+    ...story,
+    featuredImage: resolvePhoto(story.featuredImage),
+    galleryImages: story.galleryImages.map(resolvePhoto),
+  }));
 
 export function getStoryBySlug(slug: string): Story | undefined {
   return stories.find((story) => story.slug === slug);

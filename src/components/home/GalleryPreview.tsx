@@ -1,12 +1,19 @@
 import Container from "../Container";
 import SectionHeading from "../SectionHeading";
-import GalleryCard from "../GalleryCard";
 import Button from "../Button";
 import RevealOnScroll from "../RevealOnScroll";
-import { destinations } from "@/data/destinations";
+import GalleryExplorer, { type GalleryCollection } from "../GalleryExplorer";
+import { stories } from "@/data/stories";
 
 export default function GalleryPreview() {
-  const photos = destinations.map((destination) => destination.heroImage);
+  const collections: GalleryCollection[] = stories.map((story) => ({
+    slug: `story-${story.slug}`,
+    title: story.title,
+    cover: story.featuredImage,
+    images: [story.featuredImage, ...story.galleryImages],
+  }));
+
+  if (collections.length === 0) return null;
 
   return (
     <section className="bg-white-warm py-24 sm:py-28 lg:py-32">
@@ -15,7 +22,7 @@ export default function GalleryPreview() {
           <SectionHeading
             label="Places Along The Way"
             heading="Gallery"
-            description="A visual collection from the road, growing one journey at a time."
+            description="A collection of moments, places, and memories gathered along the way."
           />
           <RevealOnScroll delay={150} className="hidden sm:block">
             <Button href="/gallery" variant="link" tone="light">
@@ -24,12 +31,8 @@ export default function GalleryPreview() {
           </RevealOnScroll>
         </div>
 
-        <div className="mt-16 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
-          {photos.map((photo, index) => (
-            <RevealOnScroll key={photo.src + index} delay={(index % 3) * 100}>
-              <GalleryCard photo={photo} priority={index === 0} />
-            </RevealOnScroll>
-          ))}
+        <div className="mt-16">
+          <GalleryExplorer collections={collections} />
         </div>
 
         <div className="mt-14 sm:hidden">

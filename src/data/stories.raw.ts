@@ -11,6 +11,7 @@ export type StoryInput = Omit<Story, "featuredImage" | "galleryImages"> & {
 export const rawStories: StoryInput[] = [
   {
     slug: "mysore-palace-city-after-dark",
+    published: false,
     title: "The Palace City After Dark",
     location: "Mysore",
     state: "Karnataka",
@@ -44,6 +45,7 @@ export const rawStories: StoryInput[] = [
   },
   {
     slug: "coorg-mist-coffee-hills",
+    published: false,
     title: "Mist, Coffee, and the Hills of Coorg",
     location: "Coorg",
     state: "Karnataka",
@@ -77,6 +79,7 @@ export const rawStories: StoryInput[] = [
   },
   {
     slug: "goa-slow-mornings-on-the-coast",
+    published: false,
     title: "Slow Mornings on the Goan Coast",
     location: "Goa",
     state: "Goa",
@@ -110,6 +113,7 @@ export const rawStories: StoryInput[] = [
   },
   {
     slug: "on-the-road-through-karnataka",
+    published: false,
     title: "On the Road Through Karnataka",
     location: "Hampi",
     state: "Karnataka",
@@ -142,9 +146,85 @@ export const rawStories: StoryInput[] = [
       "Driving back to Bangalore two days later, I found myself already planning a return — there's more of Karnataka's interior I haven't seen, more small towns between the highway exits that deserve more than a glance through a car window. Hampi confirmed something I already suspected: this state rewards patience far more than it rewards a checklist.",
     ],
   },
+  {
+    slug: "bangalore-to-pondicherry",
+    published: true,
+    title: "Bangalore to Pondicherry: A Detour Worth Taking",
+    location: "Pondicherry",
+    state: "Puducherry",
+    country: "India",
+    destinationSlug: "tamil-nadu",
+    date: "2026-06-14",
+    excerpt:
+      "A solo bike ride that was supposed to end in Pondicherry, but stopped first at Arunachala, then gave me a French Colony coffee, sunset rocks, and an early morning I didn't expect at all.",
+    intro:
+      "I wasn't looking for anything extraordinary. I simply wanted to ride, explore, and step away from the familiar for a while. Pondicherry gave me a destination; the journey gave me the story.",
+    tags: ["Road Trip", "Tamil Nadu", "Pondicherry", "Solo Ride", "Arunachala"],
+    readingTime: 12,
+    tripStats: {
+      route: "Bangalore → Hosur → Krishnagiri → Tiruvannamalai → Gingee → Tindivanam → Pondicherry",
+      mapsUrl:
+        "https://www.google.com/maps/dir/?api=1&origin=Bangalore&destination=Puducherry&waypoints=Hosur|Krishnagiri|Tiruvannamalai|Gingee|Tindivanam&travelmode=driving",
+      mapsEmbedUrl:
+        "https://maps.google.com/maps?saddr=Bangalore&daddr=Hosur+to:Krishnagiri+to:Tiruvannamalai+to:Gingee+to:Tindivanam+to:Puducherry&output=embed",
+      items: [
+        { label: "Distance", value: "320 km (one side)" },
+        { label: "Travel Style", value: "Solo" },
+        { label: "Travel Mode", value: "Motorcycle" },
+      ],
+    },
+    tips: [
+      "Check fuel, tyres and chain before you leave",
+      "Share your route and expected return time with someone",
+      "Check the weather before setting out",
+      "Carry cash, ID and a basic toolkit",
+      "Leave room in your plan for an unplanned stop",
+    ],
+    foodNotes: [
+      "Fresh seafood along the coast, grilled or Tamil-style",
+      "French bakeries near White Town for croissants and baguettes",
+      "Filter coffee at almost any old-town café",
+      "Kothu parotta and other Tamil street food after dark",
+    ],
+    featuredImage: {
+      src: "/images/stories/pondicherry-entrance.jpg",
+      alt: "The white Puducherry entrance arch, lettered in Tamil and English, at the edge of the French Colony",
+      tone: "gold",
+      variant: "coast",
+      label: "Pondicherry",
+    },
+    galleryImages: [
+      { src: "/images/stories/tiruvannamalai-featured.jpg", alt: "The Raja Gopuram of Arunachaleswarar Temple towering against a clear blue sky in Tiruvannamalai", tone: "gold", variant: "palace" },
+      { src: "/images/stories/tiruvannamalai-3.jpg", alt: "Close-up of a colourfully painted temple tower, carved figures layered toward the sky", tone: "terracotta", variant: "palace" },
+      { src: "/images/stories/tiruvannamalai-4.jpg", alt: "The temple tank beside the twin gopurams of Arunachaleswarar Temple", tone: "gold", variant: "palace" },
+      { src: "/images/stories/pondicherry-street.jpg", alt: "A tree-lined French Colony street lined with mustard-yellow colonial buildings", tone: "gold", variant: "coast" },
+      { src: "/images/stories/pondicherry-rickshaw.jpg", alt: "A colourful cycle rickshaw parked outside a yellow French Colony building", tone: "terracotta", variant: "coast" },
+      { src: "/images/stories/pondicherry-2.jpg", alt: "Resting with feet up on the rocks, watching the waves roll in along the Pondicherry coast", tone: "dusk", variant: "coast" },
+      { src: "/images/stories/pondicherry-4.jpg", alt: "The Pondicherry lighthouse lit up in green and red against the night sky", tone: "dusk", variant: "coast" },
+      { src: "/images/stories/pondicherry-5.jpg", alt: "A colonial-era monument along the promenade glowing under coloured lights at night", tone: "dusk", variant: "coast" },
+    ],
+    content: [
+      "Come along with me on this one. It didn't go the way I planned, and that's exactly why it's worth telling.",
+      "The plan was simple. Leave Bangalore early, ride into Tamil Nadu, and reach Pondicherry by evening. Sit by the sea after a long ride. Just over 300 kilometres, a route I'd looked at the night before. That was the whole plan. It lasted about four hours.",
+      "Bangalore doesn't let go of you all at once on a bike. One more signal, one more truck to get past, one more broken patch of road. Then, past Hosur, everything opens up. The traffic thins out. The noise drops away. It's just you, the bike, and however much daylight is left. If you've ridden alone before, you know this moment. Your head gets quiet too.",
+      "I stopped for tea past Krishnagiri, more out of habit than need. Plastic chairs, a kettle that never stops boiling, a radio playing softly. The man running the stall asked where I was headed, like they always do. Ten minutes turned into a real conversation, about the weather, the crops that year, and a nephew of his working in Bangalore he was proud of. I'll probably never see him again. I still think about that stop.",
+      "That's one of the things I love about riding alone. You're nobody in particular to the people you meet, and they're nobody in particular to you. That makes it easier to just talk. You leave home for the destination. But it's usually the people you didn't plan to meet who stay with you.",
+      "A long solo ride is hard on your body, even if the trip looks easy from the outside. Every hour or so, my shoulders would lock up. My hands would go a little numb from the vibration. So I'd pull over, sometimes somewhere pretty, more often just a stretch of road with fields on either side. I'd get off, roll my neck, shake my hands out, walk in a small circle, and get back on. Nobody tells you about this part before your first long ride. You just learn it when your back tells you to. Those little breaks became part of the rhythm, just like the tea stops. Ride. Stop. Shake it out. Look around. Ride again.",
+      "It was on one of those quiet stretches, after the roads got smaller and the towns got fewer, that Tiruvannamalai started showing up on the signboards. It wasn't part of the plan. Pondicherry was where I was going. This was just a name on the way. But the closer I got, the harder it was to ride past. So I turned off the highway earlier than planned, and let Pondicherry wait.",
+      "You notice the hill, Arunachala, before you notice anything else in the town. The streets seem to bend around it. The buildings stay low, as if nobody wants to block the view. And there it is: huge, old, with the white tiers of the Raja Gopuram standing in front of it. It feels like the town was built around the hill, not the other way around.",
+      "I didn't come here expecting much. I'm not someone who visits temples with a list of things to do. But something about Tiruvannamalai slows you down, whether you're ready for it or not. I noticed it first in how people walked. Pilgrims walking the long path around the hill, barefoot, some quiet, some talking softly, none of them in a hurry. Many people here believe the hill itself is a form of Shiva, not just a place built for him. Whatever you believe, you can feel how differently people move once they're close to it.",
+      "I sat by the temple tank for a while, watching the two towers sit still on the water. I didn't take my phone out once, which is rare for me. I usually reach for the camera the second something looks worth keeping. This time I just sat there, listening to a bell somewhere behind me, and not much else. I can't tell you exactly what I felt that hour. Nothing dramatic. Just a kind of quiet that didn't ask anything from me. I've looked for that feeling in bigger, more famous places before, without much luck. Here, it just showed up on its own. A teacher named Ramana Maharshi lived at the foot of this hill for decades. After that hour by the tank, I understood a little better why people still come here.",
+      "Eventually I got up, mostly because the day wasn't going to wait for me. I found a coconut water stall near the temple wall. Nothing spiritual about that part, just something I needed after hours on the bike. A cold coconut, a bit of shade, and simple relief for a tired body. I've noticed the stops you don't plan for, the tea, the stretch, the coconut water, end up staying in your memory more than the actual kilometres.",
+      "Back on the road, Tamil Nadu kept changing. Narrower lanes. Temples appearing out of nowhere. The land flattening out as the coast got closer. Everything after Tiruvannamalai felt quieter, and it had nothing to do with the traffic. I wasn't riding toward something anymore. I'd already found what I came for, in a place I hadn't planned to stop at.",
+      "Pondicherry showed up the way coastal towns do. Salt in the air first, then the sea itself, grey-blue and huge after a full day of riding. I hadn't booked anywhere to stay. I hadn't booked anything for this trip at all, if I'm honest. So my first stop wasn't a hotel, it was a small juice stall, where I had a glass of cold watermelon juice and just stood there for a minute, letting the ride settle out of my legs. Only after that did I start asking around for a room. I found one without much trouble, dropped my bag, and walked straight back out to the water.",
+      "I found a stretch of black rocks along the promenade and did the only sensible thing left to do: sat down, put my feet up, and watched the waves while the sky slowly let go of its colour.",
+      "The next morning, I walked in through the old town's white entrance arch and into the French Colony, also called White Town. Everyone told me to go, and I didn't have a better plan anyway. It's a strange, lovely little part of the city. Mustard-yellow walls, pale blue shutters, flowers spilling over gates, street signs still written in French above the Tamil. I couldn't pronounce half of them and stopped trying after a while. I just walked, with no real list, letting the lanes take me wherever they wanted. Most of the time, that was back toward the sea.",
+      "I stopped at a small café with a couple of tables outside. I ordered a coffee I didn't really need and stayed there for almost an hour, doing nothing at all. Cyclists went past. A cycle rickshaw sat parked outside a yellow building nearby, waiting for nobody in particular. A group of tourists photographed a bright blue door for a very long time. An old man on a balcony above me watered his plants like it was the only thing he had to do that day. Maybe it was. There's a certain kind of happiness in sitting somewhere new with nowhere to be, and White Town gave me a full hour of exactly that.",
+      "Pondicherry cares about its food as much as it cares about its buildings. That coffee turned into a warm croissant from a French bakery close by. It felt strange to eat a croissant in Tamil Nadu, but it made sense once I tried it. Later, there was fresh fish from a stall near the harbour. After dark, a plate of kothu parotta from a roadside stand that was busier at ten at night than most restaurants are all day. Filter coffee showed up everywhere in between, the one thing that connects the French bakeries and the Tamil kitchens. If Tiruvannamalai fed something quiet in me, Pondicherry just fed me. Simple as that.",
+      "That same morning, walking along the beach road before the town had woken up, I saw something I didn't expect. A group in matching tracksuits was training on the sand, coast guard or navy trainees, by the look of it. They moved together with real discipline, the kind you only notice when you're watching it up close at six in the morning. Nearby, a group of schoolchildren was doing something similar, marching in step while someone called out the count. The sea just sat there in the background, doing nothing in particular. I stood and watched for a while, half amused and half moved, the way you get when you watch something that clearly matters to the people doing it, even if you don't fully know why.",
+      "By evening, I was back at the rocks, then walked further down to the lighthouse, lit up in green and red against a dark sky. One of the old buildings nearby glowed under coloured lights, almost like a stage. It felt like the right, slow way to end a trip that had refused, more than once, to go according to plan.",
+      "If you're curious about the numbers: it's about 310 kilometres from Bangalore to Pondicherry. On my bike, that worked out to around ₹1,150 in fuel each way. None of that tells you about the tea, the conversation, the stretch breaks, the hour by the temple tank, or a morning walk that turned into watching a beach drill I never planned to see. The odometer only measures the part that's easy to measure.",
+      "If someone asks how far Bangalore is from Pondicherry, the honest answer isn't really a number. It's a stranger's nephew working in the city. An ache in your shoulders by hour three. A hill that asks nothing of you and still gives you something back. A blue door someone couldn't stop photographing. A beach full of people marching for reasons of their own. I set out to reach Pondicherry, and I did. But if you asked me what the trip was really about, I'd say Tiruvannamalai. A stop I never planned to make, at a place that had more patience for me than I had for it. That's usually how it works. Not on the route you planned the night before, but somewhere in the gap between where you meant to go and where the road slowed you down. Next time, I hope you're the one riding along.",
+    ],
+  },
 ];
-
-// Stories aren't published yet — the site shows a "coming soon" placeholder
-// instead. The draft content above stays intact; flip this to `true` (or
-// just add real entries to rawStories) whenever the blog is ready to go live.
-export const PUBLISH_STORIES = false;

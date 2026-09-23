@@ -3,6 +3,8 @@ import { Playfair_Display, Inter } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AssistantWidget from "@/components/assistant/AssistantWidget";
+import GoogleTranslate from "@/components/GoogleTranslate";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -73,7 +75,10 @@ export default function RootLayout({
       lang="en"
       className={`${playfair.variable} ${inter.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-white-warm text-forest">
+      <body
+        className="flex min-h-full flex-col bg-white-warm text-forest"
+        suppressHydrationWarning
+      >
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded focus:bg-forest focus:px-4 focus:py-2 focus:text-sm focus:text-white-warm"
@@ -86,6 +91,8 @@ export default function RootLayout({
         </main>
         <Footer />
         <AssistantWidget />
+        <GoogleTranslate />
+        <Analytics />
       </body>
     </html>
   );

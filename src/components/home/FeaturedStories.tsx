@@ -12,7 +12,7 @@ export default function FeaturedStories() {
     <section className="bg-cream py-24 sm:py-28 lg:py-32">
       <Container>
         <div className="flex flex-col items-start justify-between gap-8 sm:flex-row sm:items-end">
-          <SectionHeading label="From The Road" heading="Stories Worth Remembering" />
+          <SectionHeading label="Along The Way" heading="Stories Worth Remembering" />
           {stories.length > 0 && (
             <RevealOnScroll delay={150} className="hidden sm:block">
               <Button href="/blog" variant="link" tone="light">

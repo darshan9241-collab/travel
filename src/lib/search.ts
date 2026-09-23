@@ -1,5 +1,5 @@
 import { rawDestinations } from "@/data/destinations.raw";
-import { rawStories, PUBLISH_STORIES } from "@/data/stories.raw";
+import { rawStories } from "@/data/stories.raw";
 
 export type SearchResultType = "page" | "destination" | "story";
 
@@ -48,12 +48,19 @@ const STATIC_PAGES: SearchItem[] = [
     href: "/contact",
     keywords: ["contact", "email", "reach", "message", "get in touch"],
   },
+  {
+    type: "page",
+    title: "Saved Stories",
+    description: "Stories you've bookmarked to come back to later.",
+    href: "/saved",
+    keywords: ["saved", "bookmark", "bookmarks", "later", "reading list"],
+  },
 ];
 
 function getPublishedRawStories() {
-  return PUBLISH_STORIES
-    ? [...rawStories].sort((a, b) => (a.date < b.date ? 1 : -1))
-    : [];
+  return rawStories
+    .filter((story) => story.published)
+    .sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
 export function getSearchIndex(): SearchItem[] {

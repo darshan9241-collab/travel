@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import SearchOverlay from "@/components/search/SearchOverlay";
+import TranslateButton from "@/components/TranslateButton";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -66,7 +67,7 @@ export default function Navbar() {
         <Link
           href="/"
           className={cn(
-            "font-serif text-xl tracking-wide transition-colors duration-300 sm:text-2xl",
+            "notranslate font-serif text-xl tracking-wide transition-colors duration-300 sm:text-2xl",
             solid ? "text-forest" : "text-white-warm",
           )}
         >
@@ -95,6 +96,34 @@ export default function Navbar() {
           </nav>
 
           <div className="flex items-center gap-5 md:border-l md:border-current/15 md:pl-6">
+            <TranslateButton
+              className={cn(solid ? "text-forest hover:text-terracotta" : "text-white-warm hover:text-gold")}
+            />
+
+            <Link
+              href="/saved"
+              aria-label="Saved stories"
+              aria-current={pathname.startsWith("/saved") ? "page" : undefined}
+              className={cn(
+                "flex h-9 w-9 items-center justify-center transition-colors duration-300",
+                solid ? "text-forest hover:text-terracotta" : "text-white-warm hover:text-gold",
+                pathname.startsWith("/saved") && (solid ? "text-terracotta" : "text-gold"),
+              )}
+            >
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                className="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={1.8}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z" />
+              </svg>
+            </Link>
+
             <button
               type="button"
               onClick={() => setSearchOpen(true)}

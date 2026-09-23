@@ -26,6 +26,9 @@ export interface PhotoRef extends PhotoInput {
 
 export interface Story {
   slug: string;
+  /** Only published stories appear on the site — draft entries stay in the
+   * data file, ready to flip on once their photos are in. */
+  published: boolean;
   title: string;
   location: string;
   state: string;
@@ -33,11 +36,33 @@ export interface Story {
   destinationSlug: string;
   date: string;
   excerpt: string;
+  /** Optional short "why this journey" blurb shown before the main content. */
+  intro?: string;
   content: string[];
   tags: string[];
   readingTime: number;
   featuredImage: PhotoRef;
   galleryImages: PhotoRef[];
+  /** Optional trip stats. `route`/`mapsUrl`/`mapsEmbedUrl` power the Route
+   * Preview section; `items` powers the inline "Trip Details" numbers box
+   * (only include figures you actually know — e.g. distance, fuel, tolls). */
+  tripStats?: {
+    route?: string;
+    /** Google Maps directions URL — the route line links here when set. */
+    mapsUrl?: string;
+    /** Keyless Google Maps embed URL (maps.google.com/maps?...&output=embed) for the Route Preview iframe. */
+    mapsEmbedUrl?: string;
+    /** Heading shown above the numbers grid, e.g. "The Numbers" or "What It Cost". */
+    itemsHeading?: string;
+    items?: { label: string; value: string }[];
+  };
+  /** Optional "Before You Go" checklist shown in a sidebar card. */
+  tips?: string[];
+  /** Optional local food highlights — rendered inline in the story via inlineBoxes. */
+  foodNotes?: string[];
+  /** Positions callout boxes (trip stats, food notes) inline within `content`,
+   * right after the paragraph at the given index (0-based). */
+  inlineBoxes?: { afterParagraph: number; box: "tripDetails" | "foodNotes" }[];
 }
 
 export interface Destination {

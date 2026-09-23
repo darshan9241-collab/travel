@@ -47,15 +47,6 @@ export default function ContactPage() {
                   →
                 </span>
               </a>
-              <a
-                href="tel:+918310859564"
-                className="group inline-flex w-fit items-center gap-2 whitespace-nowrap font-sans text-lg font-medium tracking-wide text-forest transition-colors hover:text-terracotta"
-              >
-                +91 83108 59564
-                <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">
-                  →
-                </span>
-              </a>
             </div>
 
             <div className="mt-10 flex flex-col gap-3 sm:flex-row">
@@ -64,12 +55,6 @@ export default function ContactPage() {
                 className="inline-flex items-center justify-center gap-2 bg-terracotta px-7 py-3.5 text-sm font-medium tracking-wide text-white-warm transition-colors duration-300 hover:bg-terracotta-dark"
               >
                 Email Me →
-              </a>
-              <a
-                href="tel:+918310859564"
-                className="inline-flex items-center justify-center gap-2 border border-forest/30 px-7 py-3.5 text-sm font-medium tracking-wide text-forest transition-colors duration-300 hover:bg-forest hover:text-white-warm"
-              >
-                Call Me →
               </a>
             </div>
           </RevealOnScroll>

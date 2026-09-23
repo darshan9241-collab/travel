@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import PageHeader from "@/components/PageHeader";
 import Container from "@/components/Container";
-import ImageGallery from "@/components/ImageGallery";
-import { destinations } from "@/data/destinations";
+import GalleryExplorer, { type GalleryCollection } from "@/components/GalleryExplorer";
+import { stories } from "@/data/stories";
 import { resolvePhoto } from "@/lib/images";
 
 export const metadata: Metadata = {
@@ -18,10 +18,12 @@ const headerPhoto = resolvePhoto({
   variant: "hills",
 });
 
-const galleryImages = destinations.flatMap((destination) => [
-  destination.heroImage,
-  ...destination.galleryImages,
-]);
+const collections: GalleryCollection[] = stories.map((story) => ({
+  slug: `story-${story.slug}`,
+  title: story.title,
+  cover: story.featuredImage,
+  images: [story.featuredImage, ...story.galleryImages],
+}));
 
 export default function GalleryPage() {
   return (
@@ -29,12 +31,12 @@ export default function GalleryPage() {
       <PageHeader
         label="Places Along The Way"
         heading="Gallery"
-        description="A visual collection from the road, growing one journey at a time."
+        description="A collection of moments, places, and memories gathered along the way."
         photo={headerPhoto}
       />
       <section className="bg-white-warm py-20 sm:py-24">
         <Container>
-          <ImageGallery images={galleryImages} showLabels={false} />
+          <GalleryExplorer collections={collections} />
         </Container>
       </section>
     </>
